@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+	$(function(){
+		var room=prompt("방 이름을 입력하세요","Happy");
+		var socket=io.connect();//소켓 서버 연결
+		socket.emit("join", room);
+		$('#msg').on('keydown',function(e){
+			
+		if(e.keyCode==13&& $(this).val().length>0){
+		//	alert('엔터침');
+		//$('#btSend').click(function(){
+			var from=$('#userId').val();
+			var sendMsg=$('#msg').val();
+			
+			socket.emit('message',{
+				'id':from,
+				'message':sendMsg,
+				'date':new Date().toUTCString()
+			});
+			$('#msg').val("");
+			
+		}//if엔터칠때----------------
+		});
+		
+		socket.on('message',function(data){
+			//alert("메시지가 와요");
+			var str="["+data.id+"] >>"+data.message+" ("+data.date+")";
+			$('#content').append("<p><b>"+str+"</b></p>");
+			//메시지가 누적될 때마다 스크롤바가 따라다니도록
+			$('#content').animate({scrollTop:$('#content').prop('scrollHeight')+'px'}, 200);
+			
+		});
+	});
+	
+</script>
+</head>
+<body>
+<h1>MyChat</h1>
+<hr>
+<input type="text" id="userId">
+<input type="text" id="msg">
+<button id="btSend">전송</button>
+<div id="content" style="overflow: scroll;margin:20px;height: 300px;width:500px;border:2px solid red"></div>
+</body>
+</html>
