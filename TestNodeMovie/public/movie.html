@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+<style type="text/css">
+	.line{overflow:hidden;}
+	.seat{
+	 margin: 2px;float: left;
+	 width: 30px;height: 30px;
+	 border-radius:3px;
+	}
+	.enable{
+		background: gray;		
+	}
+	.enable:hover{
+		background: navy;
+	}
+	.disable{
+		background: red;
+	}
+</style>
+<script type="text/javascript">
+	var socket=io.connect();
+	socket.on("reserver",function(data){
+		var $obj=$('div[data-x='+data.x+'][data-y='+data.y+']');
+		$obj.removeClass('enable');
+		$obj.addClass('disable');
+	});
+	var onClickSeat=function(){
+		var x=$(this).attr('data-x');
+		var y=$(this).attr('data-y');
+		if(confirm('Do you reserve?')){
+			$(this).off('click');
+			socket.emit('reserve',{
+				x:x,
+				y:y
+			});
+		}
+		
+		
+	};
+	
+	$.getJSON('/seats',{dummy:new Date().getTime()},function(data){
+		$.each(data,function(indexY, line){
+			var $line=$('<div></div>').addClass('line');
+			$.each(line,function(indexX,seat){
+				var $str=$('<div></div>',{
+					'class':'seat',
+					'data-x':indexX,
+					'data-y':indexY
+				}).appendTo($line);
+				if(seat==1){
+					$str.addClass('enable').on('click',onClickSeat);
+				}else if(seat==2){
+					$str.addClass('disable')
+				}
+			});
+			$line.appendTo('body');
+		});
+		
+	});
+
+</script>
+</head>
+<body>
+<h1>Movie Reservation</h1>
+
+</body>
+</html>
