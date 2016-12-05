@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>input.html</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="text/javascript"
+	src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script type="text/javascript"
+	src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<link
+	href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css"
+	rel="stylesheet" type="text/css">
+<link
+	href="http://pingendo.github.io/pingendo-bootstrap/themes/default/bootstrap.css"
+	rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class="container">
+<h1>Node File Upload Test2</h1>
+<h2>여러 파일을 업로드해봅시다.</h2>
+<form action="/uploadEnd" method="post" enctype="multipart/form-data" role="form">
+
+    <label for="username">Name</label> 
+    <input type="text" name="username" id="username" class="form-control">
+
+    <p>
+
+<label for="myfile1">File</label>
+      
+
+    <input type="file" name="myfile1" id="myfile1"  class="form-control">
+    <input type="file" name="myfile1" id="myfile2"  class="form-control">
+    <input type="file" name="myfile1" id="myfile3"  class="form-control">
+
+
+    <input type="submit" value="Upload" class="btn btn-success">
+
+ </form>
+</div>
+</body>
+</html>
