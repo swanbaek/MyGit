@@ -9,6 +9,8 @@
     "express": "3.2.6",
     "jade": "*",
     "mysql":"*",
-    "serve-favicon":"*"
+    "ejs":"*",
+    "serve-favicon":"*",
+    "multer":"*"
   }
 }
