@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="movie.model.MovieMapper">
+
+	
+	<!--[영화 목록 메인 페이지] 페이징 처리시  -->
+	<select id="listMovie"  resultType="Movie">
+	select * from movie_film order by rate desc,movie_code asc
+	<!-- select * from(
+		select rownum rn, a.* from
+  		( select * from board order by idx desc   ) a
+  		)
+    where rn between #{start} and #{end} -->
+	</select>
+	<select id="listMovieView" resultType="MovieView">
+	select mf.*, mg.genrename, gr.gradename, gr.gradeimage
+from movie_genre mg join movie_film mf
+on mg.genrecode= mf.genrecode
+join movie_grade gr 
+on mf.gradecode =gr.gradecode order by rate desc, movie_code asc
+	</select>
+	
+	<!-- 상세보기 -->
+	<select id="detailMovie" parameterType="int" resultType="Movie">
+		select * from movie_film where movie_code=#{value}
+	</select>
+	<select id="detailMovieView" resultType="MovieView" parameterType="int">
+	select mf.*, mg.genrename, gr.gradename, gr.gradeimage
+from movie_genre mg join movie_film mf
+on mg.genrecode= mf.genrecode
+join movie_grade gr 
+on mf.gradecode =gr.gradecode and movie_code=#{value} 
+order by rate desc, movie_code asc
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

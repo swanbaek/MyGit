@@ -1342,7 +1342,7 @@ mark,
   color: #777777;
 }
 .text-primary {
-  color: #85144b;
+  color: #337cbb; /*#d9534f;*/
 }
 a.text-primary:hover {
   color: #590d32;
@@ -4779,7 +4779,7 @@ a.label:focus {
   background-color: #449d44;
 }
 .label-info {
-  background-color: #b11b64;
+  background-color: #337cbb; 
 }
 .label-info[href]:hover,
 .label-info[href]:focus {
