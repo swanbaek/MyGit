@@ -1,0 +1,86 @@
+참조:
+http://blog.naver.com/yotegy/220574304854
+http://blog.naver.com/03tlqfk/220546427291
+
+
+mysql을 들어간다.
+
+#1. database생성
+[1]기존 데이터베이스 확인
+show databases;
+[2] testdb 데이터베이스 생성
+create database testdb
+default character set utf8
+default collate utf8_general_ci;
+
+(한글설정을 위해 utf8설정이 필요
+사전에 해주지 않으면 이후 생성된
+테이블마다 해줘야 하는 불편함 발생.
+설치부터 default로 주자.)
+
+#2.  user생성=> james생성
+
+create user james@'%' identified by 'tiger';
+
+
+'%'와 'tiger'에서 '' 들어감에 주의
+%는 외부에서 접근을 허용한다는 것.
+특정 ip나 dns에 등록된 명칭만
+지정하면 그곳에서만 접근 가능함
+
+#3. 권한부여
+grant all privilegs on testdb.* to 'james'@'%';
+
+#4. 도스에서 james로 접속
+mysql -u james -p  엔터
+
+비밀번호 입력후 
+testdb를 사용하겠다고 지정
+
+use testdb;
+
+#5. memo테이블 생성해서 레코드 삽입
+create table memo(
+idx int auto_increment primary key,
+name varchar(20) not null,
+msg varchar(100) null,
+wdate date not null);
+
+desc memo;
+
+insert into memo(name,msg,wdate)
+values('홍길동','안녕하세요?',sysdate());
+
+select * from memo;
+
+#6. 이클립스에서 Node Express프로젝트 생성
+프로젝트명: TestNodeMysql 
+package.json파일에
+mysql 모듈 추가
+--package.json-------------------------
+{
+  "name": "TestNodeMysql",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "3.2.6",
+    "jade": "*",
+    "mysql":"*"
+  }
+}
+--------------------------
+package.json파일을 선택후
+오른마우스 Run as npm install
+하여 설치 진행
+=>설치가 되면
+TestNodeMysql\node_modules
+아래 mysql폴더가 생성된것
+확인됨.
+
+
+
+
+
