@@ -30,8 +30,17 @@ public class MovieVOView implements Serializable {
 	private String movie_site;/*영화 공식 사이트*/
 	private float rate;
 	
+	private int theater_code;
 	
 	
+	
+	
+	public int getTheater_code() {
+		return theater_code;
+	}
+	public void setTheater_code(int theater_code) {
+		this.theater_code = theater_code;
+	}
 	public float getRate() {
 		return rate;
 	}

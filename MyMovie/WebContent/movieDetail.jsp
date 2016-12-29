@@ -4,6 +4,15 @@
 <jsp:include page="/top2.jsp"/>
 <jsp:useBean id="mdao" class="movie.model.MovieDAOMyBatis"
 	scope="session" />
+<script type="text/javascript">
+
+	var reserve=function(){
+		$('#rf').submit();
+		
+	}
+
+</script>	
+	
 <%
 	String mcodeStr=request.getParameter("mcode");
 	if(mcodeStr==null||mcodeStr.trim().isEmpty()){
@@ -13,6 +22,9 @@
 	int mcode=Integer.parseInt(mcodeStr.trim());
 	request.setAttribute("movie", mdao.getMovieDetail(mcode));
 %>
+<form id="rf" name="rf" action="movieReserve.jsp" method="get">
+	<input type="hidden" name="mcode" id="mcode" value="${movie.movie_code}"/>
+</form>
 
 <div class="section">
 		<div class="container">
@@ -25,7 +37,9 @@
 				<div class="col-md-5">
 					<h1>${movie.movie_title }&nbsp;&nbsp;&nbsp;&nbsp;
 					<img src="images/ing.png">&nbsp;
-					<img src="images/${movie.gradeimage}"></h1>
+					<img src="images/${movie.gradeimage}">
+					<button class="btn btn-success" type="button" onclick="reserve()">예매하기</button>
+					</h1>
 					<h3>${movie.subtitle }</h3>
 					<h4 class="text-primary">예매율: a위 ${movie.rate}%</h4>
 					<p>${movie.story }</p>
@@ -35,7 +49,9 @@
 					<b>개봉일</b>&nbsp;:${movie.opendate }<br>
 					<b>장르</b>&nbsp;&nbsp;: ${movie.genrename }<br>
 					<b>기본정보</b>&nbsp;&nbsp;: ${movie.makeCountry}&nbsp;(${movie.runtime})분
+					<p>
 					
+					</p>
 				</div>
 			</div>
 		</div>
