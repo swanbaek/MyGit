@@ -56,7 +56,7 @@ public class EchoHandler extends TextWebSocketHandler{
         
         //연결된 모든 클라이언트에게 메시지 전송 : 리스트 방법
         for(WebSocketSession sess : sessionList){
-            sess.sendMessage(new TextMessage("echo:" + message.getPayload()));
+            sess.sendMessage(new TextMessage(sess.getId()+":" + message.getPayload()));
         }
         
         // 맵 방법.
