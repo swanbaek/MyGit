@@ -1,9 +1,9 @@
 package com.bigbang.chat;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 
 
-public class EchoHandler extends TextWebSocketHandler{
+public class EchoHandler2 extends TextWebSocketHandler{
 	
 	//세션을 모두 저장한다.
     //방법 1 :  1:1 채팅
@@ -41,19 +41,14 @@ public class EchoHandler extends TextWebSocketHandler{
         //List쓸때 방법
         sessionList.add(session);
          //0번째 중괄호에 session.getId()을 넣으라는뜻
-        logger.info("{} 연결됨", session.getId());
-        for(WebSocketSession sess : sessionList){
-        	for(String st:seat){
-        	sess.sendMessage(new TextMessage(st));
-        	}
-        }
+        logger.info("{} 연결됨", session.getId()); 
         
     }
     
     /**
      * 클라이언트가 웹소켓 서버로 메시지를 전송했을 때 실행되는 메소드
      */
-    Set<String> seat=new HashSet<>();
+    
     @Override
     protected void handleTextMessage(WebSocketSession session,
             TextMessage message) throws Exception {
@@ -65,9 +60,7 @@ public class EchoHandler extends TextWebSocketHandler{
         //연결된 모든 클라이언트에게 메시지 전송 : 리스트 방법
         for(WebSocketSession sess : sessionList){
            // sess.sendMessage(new TextMessage(sess.getId()+"##" + message.getPayload()));
-        	String str=message.getPayload();        	
-        	sess.sendMessage(new TextMessage(str));
-        	seat.add(str);
+        	sess.sendMessage(new TextMessage(message.getPayload()));        	
         }
         
         // 맵 방법.

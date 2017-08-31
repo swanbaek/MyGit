@@ -24,15 +24,20 @@
 
 
 <script type="text/javascript">
+var arr=[];
+
+var init=function(){
+	$.each(arr,function(i, item){
+		alert(item);
+		//$('#seat'+item).css('background','red');
+	});
+}
+ 
 	$(document).ready(function() {
-		$("#sendBtn").click(function() {
-			sendMessage();
-		});
-		$('#message').keyup(function(e){
-			if(e.keyCode == 13){
-				sendMessage();
-			}
-		})
+		init();
+		$(".cellSeat").click(function() {
+			sendMessage(this);
+		});		
 	});
 
 	//websocket을 지정한 URL로 연결
@@ -42,20 +47,29 @@
 	//websocket 과 연결을 끊고 싶을때 실행하는 메소드
 	sock.onclose = onClose;
 
-	function sendMessage() {
-
+	
+	function sendMessage(obj) {
+		var x=$(obj).attr('data-x');
+		var y=$(obj).attr('data-y');
 		//websocket으로 메시지를 보내겠다.
-		$from=$('#nickName').val();
-		$msg=$('#message').val();
-		sock.send($from+">>"+$msg);
-		$('#message').val('');
+		/* arr.push({'x':x,'y':y});
+		console.log("arr="+JSON.stringify(arr)); */
+		var arr=x+""+y;
+		sock.send(arr);
+	
 
 	}
 
 	//evt 파라미터는 websocket이 보내준 데이터다.
 	function onMessage(evt) { //변수 안에 function자체를 넣음.
 		var data = evt.data;
-		$("#data").append(data + "<br/>");
+
+		//alert(JSON.stringify(data));
+		$("#data").append(data+"<br/>");
+		$('#seat'+data).css('background', 'red');
+		$('#seat'+data).unbind('click');
+		arr.push(data);
+		console.log(arr);
 		/* sock.close(); */
 	}
 
@@ -69,10 +83,16 @@
 		<div class="row">
 			<div class="col-md-8 col-md-offset-2">
 				<H1>Echo Chat</H1>
-				<label for="nickName">Nick Name:</label><input type="text" id="nickName" placeholder="참여자 닉네임을 입력하세요"  class="form-control">
-				<label for="message">Message:</label><input type="text" id="message" class="form-control" placeholder="전송할 메시지를 입력하세요" /> 
-				<input type="button" id="sendBtn" value="전송" class="btn btn-success" />
-				<div id="data"></div>
+				<div id="data" class="bg bg-warning"></div>
+				<table class="table table-bordered" id="tableSeat">
+				<% for(int i=0;i<10;i++){ %>
+					<tr>
+					<% for(int k=0;k<10;k++){ %>
+						<td id='seat<%=k%><%=i%>' class='cellSeat' data-x="<%=k%>" data-y="<%=i%>"><%=i%>,<%=k %></td>
+						<%} %>
+					</tr>
+				<%} %>					
+				</table>
 			</div>
 		</div>
 	</div>
