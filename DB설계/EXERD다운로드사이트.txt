@@ -1,0 +1,8 @@
+EXERD다운로드 사이트
+
+http://ko.exerd.com
+
+http://exerd.com/update
+
+매뉴얼
+http://exerd.com:8081/help/index.jsp

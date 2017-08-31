@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="movie.model.MovieMapper">
+
+
+	<!--[영화 목록 메인 페이지] 페이징 처리시 -->
+	<select id="listMovie" resultType="Movie">
+		select * from movie_film order by rate desc,movie_code asc
+		<!-- select * from( select rownum rn, a.* from ( select * from board order 
+			by idx desc ) a ) where rn between #{start} and #{end} -->
+	</select>
+	<select id="listMovieView" resultType="MovieView">
+		select mf.*, mg.genrename, gr.gradename, gr.gradeimage
+		from movie_genre mg join movie_film mf
+		on mg.genrecode= mf.genrecode
+		join movie_grade gr
+		on mf.gradecode =gr.gradecode order by rate desc, movie_code asc
+	</select>
+
+	<!-- 상세보기 -->
+	<select id="detailMovie" parameterType="int" resultType="Movie">
+		select *
+		from movie_film where movie_code=#{value}
+	</select>
+	<select id="detailMovieView" resultType="MovieView"
+		parameterType="int">
+		select mf.*, mg.genrename, gr.gradename, gr.gradeimage
+		from movie_genre mg join movie_film mf
+		on mg.genrecode= mf.genrecode
+		join movie_grade gr
+		on mf.gradecode =gr.gradecode and movie_code=#{value}
+		order by rate desc, movie_code asc
+	</select>
+	
+	<!--[예매관련-지역 목록 가져오기]  -->
+	<select id="listLoc" resultType="Theater">
+		select a.*,(select count(*) from theater where loc_code=a.loc_code) cnt  from loc a order by a.loc_code
+	</select>
+	
+	<select id="listLocByMovieCode" resultType="Theater" parameterType="int">
+	
+	select a.movie_code, a.movie_title,
+(select distinct loc_name from loc where loc_code= c.loc_code) loc_name, c.loc_code
+from movie_film a
+ join schedule b
+on a.movie_code = b.movie_code
+join theater c
+on b.theater_code= c.theater_code
+and a.movie_code=#{movie_code} order by c.loc_code
+	</select>
+	
+	<select id="listCountByMovieCode" parameterType="int" resultType="Theater">
+	select loc_name, a.*
+from loc k join 
+(select  loc_code, count(*) cnt
+from theater c join schedule b on
+c.theater_code =b.theater_code join movie_film a
+on a.movie_code=b.movie_code and a.movie_code=#{movie_code}
+group by c.loc_code) a
+on k.loc_code=a.loc_code
+	</select>
+	
+	<select id="listTheater" resultType="Theater" parameterType="int">
+		select * from theater where loc_code=#{value} order by theater_name
+	</select>
+	<!-- 특정 영화를 상영하는 특정 지역의 영화관 목록 가져오기 -->
+	<select id="listTheaterByMovie"  resultType="Theater" parameterType="map">
+select  *
+from theater c join schedule b on
+c.theater_code =b.theater_code join movie_film a
+on a.movie_code=b.movie_code and a.movie_code=#{movie_code} and c.loc_code=#{loc_code} 
+	</select>
+	
+	<select id="listMovieByTheater" resultType="MovieView" parameterType="int">
+	select a.movie_title, a.movie_code,
+(select gradeimage from movie_grade where gradecode=a.gradecode) 
+gradeimage,b.theater_code
+from movie_film a join schedule b
+on a.movie_code=b.movie_code and b.theater_code=#{theater_code}
+	</select>
+	<select id="listMovieByRate" resultType="MovieView">
+		select a.*, 
+(select gradeimage from movie_grade where gradecode=a.gradecode) gradeimage
+from movie_film a order by rate desc
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

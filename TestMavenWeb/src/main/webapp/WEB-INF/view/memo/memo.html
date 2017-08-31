@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>memo.html</title>
+
+<style type="text/css">
+	body, th, td, input{
+		font-size:13px;/*글자크기*/
+		color:navy;/*글자색*/
+		font-family:verdana;/*서체*/
+		padding: 2px;/*안쪽 여백*/
+	}
+	
+	table{
+		border-collapse:collapse;
+		margin-top:30px;/*바깥 탑 여백*/
+	}
+	
+	table th{
+		background-color:#efefef;
+		font-size:16px;
+		height:25px;
+	}
+	.box{
+		border: 1px dashed navy;
+	}
+</style>
+</head>
+<body>
+<!--[실습] MemoInsert서블릿을 작성해서 사용자가 입력한 값을 
+브라우저에 출력하세요 -->
+<form name="f" action="/MyWeb/MemoInsert">
+<table width="90%" border="1">
+	<tr>
+		<th colspan="2">:::한줄 메모장:::</th>
+	</tr>
+	<tr>
+		<td width="15%"><b>작성자</b></td>
+		<td width="85%" align="left">
+			<input type="text" name="name" size="30" class="box">
+		</td>
+	</tr>
+	<tr>
+		<td width="15%"><b>메모내용</b></td>
+		<td width="85%" align="left">
+			<input type="text" name="msg" size="70" class="box">
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" align="center">
+			<input type="submit" value="메모남기기" class="box">
+			<input type="reset" value="다시쓰기" class="box">
+		</td>
+	</tr>
+
+</table>
+</form>
+
+</body>
+</html>
