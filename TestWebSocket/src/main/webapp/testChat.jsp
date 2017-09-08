@@ -9,9 +9,58 @@
 	src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 <script type="text/javascript"
 	src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="<c:url value='/js/sockjs.js'/>">
+<!-- sockjs.js라이브러리 참조----------------------------- -->
+<script type="text/javascript" src="<c:url value='/js/sockjs.js'/>"></script>
+<!-- ----------------------------------------------------- -->	
+</script>
+
+<script type="text/javascript">
+	$(function(){
+		$('#sendBtn').click(function(){
+			sendMessage();
+		});
+		$('#message').keydown(function(e){
+			//alert(e.keyCode);
+			if(e.keyCode == 13){ //엔터 쳤을 때
+				sendMessage();
+			}
+		});
+		
+	});
+	
+	//sockjs.js라이브러리에 있는 객체
+	var sock=new SockJS("<c:url value='/echo'/>");
+	//웹소켓 연결
+	
+	//메시지가 도착했을 때 호출해줄 콜백함수를 onMessage로 지정
+	sock.onmessage = onMessage;
+	
+	//웹소켓 연결이 끊길 때 호출할 콜백함수 onClose로 지정
+	sock.onclose = onClose;
+	
+	var sendMessage=function(){
+		//대화명 얻기
+		var nickName=$('#nickName').val();
+		//메시지 얻기
+		var msg=$('#message').val();
+		sock.send(nickName+">> "+msg);
+		$('#message').val("");
+		$('#message').focus();
+	}
+	
+	function onMessage(evt){
+		//evt파라미터는 websocket이 보내준 데이터
+		var data=evt.data;
+		$('#data').append(data+"<br>");	
+		$("#data").scrollTop($("#data")[0].scrollHeight);
+	}
+	
+	function onClose(evt){
+		$('#data').append("연결 끊김..");
+	}
 	
 </script>
+
 
 
 <link
@@ -24,44 +73,7 @@
 
 
 <script type="text/javascript">
-	$(document).ready(function() {
-		$("#sendBtn").click(function() {
-			sendMessage();
-		});
-		$('#message').keyup(function(e){
-			if(e.keyCode == 13){
-				sendMessage();
-			}
-		})
-	});
-
-	//websocket을 지정한 URL로 연결
-	var sock = new SockJS("<c:url value="/echo"/>");
-	//websocket 서버에서 메시지를 보내면 자동으로 실행된다.
-	sock.onmessage = onMessage;
-	//websocket 과 연결을 끊고 싶을때 실행하는 메소드
-	sock.onclose = onClose;
-
-	function sendMessage() {
-
-		//websocket으로 메시지를 보내겠다.
-		$from=$('#nickName').val();
-		$msg=$('#message').val();
-		sock.send($from+">>"+$msg);
-		$('#message').val('');
-
-	}
-
-	//evt 파라미터는 websocket이 보내준 데이터다.
-	function onMessage(evt) { //변수 안에 function자체를 넣음.
-		var data = evt.data;
-		$("#data").append(data + "<br/>");
-		/* sock.close(); */
-	}
-
-	function onClose(evt) {
-		$("#data").append("연결 끊김");
-	}
+	
 </script>
 </head>
 <body>
@@ -72,7 +84,7 @@
 				<label for="nickName">Nick Name:</label><input type="text" id="nickName" placeholder="참여자 닉네임을 입력하세요"  class="form-control">
 				<label for="message">Message:</label><input type="text" id="message" class="form-control" placeholder="전송할 메시지를 입력하세요" /> 
 				<input type="button" id="sendBtn" value="전송" class="btn btn-success" />
-				<div id="data"></div>
+				<div id="data" style="width:100%;height: 400px;overflow-x:hidden;overflow-y:auto;border:3px solid silver;padding:12px" ></div>
 			</div>
 		</div>
 	</div>
