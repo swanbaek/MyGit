@@ -5,7 +5,7 @@
 	<title>Home</title>
 </head>
 <body>
-<h1 style="COLOR:GREEN">
+<h1>
 	Hello world!  
 </h1>
 
