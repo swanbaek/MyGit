@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!-- namespace 속성값을 BoardMapper인터페이스와 동일한 이름을 주어야 함에 주의하자 -->
+<mapper namespace="com.tis.mapper.BoardMapper">    
+	<select id="getTotalCount" resultType="int">
+		select count(*) from tbl_board
+	</select>
+		
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
